@@ -251,6 +251,9 @@ class UIXInputBox : public UIXObject{
             pressed=false;
         }
     }
+    void invalidate(){
+        redraw=true;
+    }
     void updaterefresharea(int* refreshsp,int* refreshep,int pagestarty,int pageendy){
         UIXRenderer::updaterefresharea(refreshsp,refreshep,pagestarty,pageendy,t-3,b+3);
     }

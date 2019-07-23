@@ -35,11 +35,16 @@ class DMASPI{
         }else if(hosttyp==3){
             spih=VSPI_HOST;
         }
+        ESP_LOGI(0,"UIX bus config begin");
         spi_bus_config_t spiconf;
         spiconf.miso_io_num=miso_pin;spiconf.mosi_io_num=mosi_pin;spiconf.sclk_io_num=sck_pin;
         spiconf.quadhd_io_num=-1;spiconf.quadwp_io_num=-1;
         spiconf.max_transfer_sz=512000;
+        spiconf.intr_flags=0;
+        spiconf.flags=SPICOMMON_BUSFLAG_MASTER|SPICOMMON_BUSFLAG_SCLK|SPICOMMON_BUSFLAG_MISO|SPICOMMON_BUSFLAG_MOSI;
+        //spiconf.intr_flags=0;
         spi_bus_initialize(spih,&spiconf,dmachan);  //initialize bus
+        ESP_LOGI(0,"UIX bus config end");
         spi_device_interface_config_t spidevconf;
         spidevconf.command_bits=0;
         spidevconf.address_bits=0;
