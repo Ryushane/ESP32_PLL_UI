@@ -42,7 +42,8 @@ UIXButton freqplus(150, 220, 180, 210, COLLIGHTGRAY, COLCYAN, "+", voidfunc);
 UIXButton freqminus(150, 220, 220, 250, COLLIGHTGRAY, COLCYAN, "-", voidfunc);
 
 void btnsendclick(int tag, UIXButton* obj){
-    freq = atof(freqstr);
+    // freq = atof(freqstr);
+    sscanf(freqstr, "%lf", &freq);
     // Serial.println(freq);
     frequpdate();
     obj->selected = false;
