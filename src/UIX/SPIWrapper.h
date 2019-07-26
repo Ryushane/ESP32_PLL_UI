@@ -36,7 +36,7 @@ class DMASPI{
             spih=VSPI_HOST;
         }
         ESP_LOGI(0,"UIX bus config begin");
-        spi_bus_config_t spiconf;
+        spi_bus_config_t spiconf={};
         spiconf.miso_io_num=miso_pin;spiconf.mosi_io_num=mosi_pin;spiconf.sclk_io_num=sck_pin;
         spiconf.quadhd_io_num=-1;spiconf.quadwp_io_num=-1;
         spiconf.max_transfer_sz=512000;
@@ -45,7 +45,7 @@ class DMASPI{
         //spiconf.intr_flags=0;
         spi_bus_initialize(spih,&spiconf,dmachan);  //initialize bus
         ESP_LOGI(0,"UIX bus config end");
-        spi_device_interface_config_t spidevconf;
+        spi_device_interface_config_t spidevconf={};
         spidevconf.command_bits=0;
         spidevconf.address_bits=0;
         spidevconf.dummy_bits=0;
@@ -60,7 +60,7 @@ class DMASPI{
         spidevconf.pre_cb=(transaction_cb_t)spipretrans;
         spidevconf.post_cb=(transaction_cb_t)spiposttrans;
         spi_bus_add_device(spih,&spidevconf,&spidevhandle);
-        spi_device_interface_config_t spislowdevconf;
+        spi_device_interface_config_t spislowdevconf={};
         spislowdevconf.command_bits=0;
         spislowdevconf.address_bits=0;
         spislowdevconf.dummy_bits=0;

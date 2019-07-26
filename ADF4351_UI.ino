@@ -27,6 +27,8 @@ void btnclearrecvclick(int tag, UIXButton* obj);
 void btnfreqplus(int tag, UIXButton* obj);
 void btnfreqminus(int tag, UIXButton* obj);
 void voidfunc(int tag, UIXButton* obj);
+void sendchar(char *);
+
 
 char freqstr[100]="";
 char recvstr[100]="";
@@ -35,18 +37,25 @@ double freq = INITFREQ;
 
 bool tickflag = false;
 
+int counter = 0;
+
 UIXInputBox inptsend(20, 120, 180, 210, COLVSBLUE, COLCYAN, freqstr);
 UIXButton btnsend(20, 90, 220, 250, COLVSBLUE, COLCYAN, "Apply", btnsendclick);
 
-UIXButton freqplus(150, 220, 180, 210, COLLIGHTGRAY, COLCYAN, "+", voidfunc);
-UIXButton freqminus(150, 220, 220, 250, COLLIGHTGRAY, COLCYAN, "-", voidfunc);
+UIXButton freqplus(150, 220, 180, 210, COLDARKGRAY, COLCYAN, "+", voidfunc);
+UIXButton freqminus(150, 220, 220, 250, COLDARKGRAY, COLCYAN, "-", voidfunc);
 
+UIXConsole console(sendchar);
 void btnsendclick(int tag, UIXButton* obj){
     // freq = atof(freqstr);
     sscanf(freqstr, "%lf", &freq);
     // Serial.println(freq);
     frequpdate();
     obj->selected = false;
+}
+
+void sendchar(char * testchar){
+    console.log("Received char %s", testchar);
 }
 
 void voidfunc(int tag, UIXButton* obj){
@@ -61,6 +70,7 @@ void frequpdate(){
 }
 
 void setup(){
+
     hspi = new SPIClass(HSPI);
     PLL = new ADF4351(CS, CE, hspi);
     Serial.begin(115200);
@@ -70,12 +80,15 @@ void setup(){
     sprintf(freqstr, "%lf", freq);
 
     pinMode(15, OUTPUT);
-    uixuserpanelnum = 1;
+    uixuserpanelnum = 2;
     uixpanels[0].label="SerialTest";
     uixpanels[0].uixobjects+=inptsend;
     uixpanels[0].uixobjects+=btnsend;
     uixpanels[0].uixobjects+=freqplus;
     uixpanels[0].uixobjects+=freqminus;
+
+    uixpanels[1].label="Console";
+    uixpanels[1].uixobjects+=console;
 
     uix.begin();
 }
@@ -94,5 +107,6 @@ void loop(){
             frequpdate();
         }
     }
-
+    // console.log("this is a test %d", counter);
+    // counter = counter + 1;
 }
